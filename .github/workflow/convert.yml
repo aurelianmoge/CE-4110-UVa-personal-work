@@ -3,12 +3,13 @@ name: Convert Jupyter Notebooks to PDF
 on:
   push:
     branches:
-      - main 
-  workflow_dispatch: # Permet aussi de lancer la conversion manuellement
+      - main
+  workflow_dispatch:
 
 jobs:
   convert_notebooks:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,4 +24,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: notebook-pdf
-          path: mon_document.pdf
+          path: HW2-MOGE-CE6250.pdf
