@@ -14,11 +14,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install Jupyter and LaTeX
+        run: |
+          pip install jupyter nbconvert
+          sudo apt-get update
+          sudo apt-get install -y texlive-xetex texlive-fonts-recommended texlive-plain-generic
+
       - name: Convert Notebook to PDF
-        uses: yaananth/jupyter-notebooks-to-pdf@v2
-        with:
-          notebook: "Homework2.ipynb"
-          output: "HW2-MOGE-CE6250.pdf"
+        run: |
+          jupyter nbconvert --to pdf Homework2.ipynb --output HW2-MOGE-CE6250.pdf
 
       - name: Upload PDF Artifact
         uses: actions/upload-artifact@v4
