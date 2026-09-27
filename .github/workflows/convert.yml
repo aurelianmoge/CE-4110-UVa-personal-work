@@ -19,16 +19,26 @@ jobs:
           python -m pip install --upgrade pip
           pip install "nbconvert[webpdf]"
 
-      - name: Convert Notebook to PDF
+      - name: Convert all notebooks to PDF
         run: |
-          jupyter nbconvert \
-            --to webpdf \
-            --allow-chromium-download \
-            Homework2.ipynb \
-            --output HW2-MOGE-CE6250.pdf
+          mkdir -p pdfs
 
-      - name: Upload PDF
+          for notebook in *.ipynb; do
+            [ -e "$notebook" ] || continue
+
+            filename=$(basename "$notebook" .ipynb)
+
+            echo "Converting $notebook..."
+            jupyter nbconvert \
+              --to webpdf \
+              --allow-chromium-download \
+              "$notebook" \
+              --output-dir pdfs \
+              --output "${filename}.pdf"
+          done
+
+      - name: Upload PDFs
         uses: actions/upload-artifact@v4
         with:
-          name: HW2-MOGE-CE6250
-          path: HW2-MOGE-CE6250.pdf
+          name: converted-notebooks
+          path: pdfs/*.pdf
